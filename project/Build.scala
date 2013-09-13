@@ -44,10 +44,15 @@ object SprayExampleProjectBuild extends Build {
   import Dependencies.commonDeps
   import spray.revolver.RevolverPlugin.Revolver
   import org.scalastyle.sbt.ScalastylePlugin
+  import sbtassembly.Plugin.AssemblyKeys
+  import sbtassembly.Plugin.assemblySettings
 
   lazy val root = Project("spray-example-project", 
 			  file("."),
 			  settings = buildSettings ++
-				Seq(libraryDependencies ++= commonDeps,
-				    resolvers := Resolvers.resolvers) ++ Revolver.settings ++ ScalastylePlugin.Settings)
+			    Revolver.settings ++
+			    ScalastylePlugin.Settings ++ assemblySettings) settings(
+			      libraryDependencies ++= commonDeps,
+			      resolvers := Resolvers.resolvers,
+			      mainClass in AssemblyKeys.assembly := Some("jp.midx.ex.Boot"))
 }
